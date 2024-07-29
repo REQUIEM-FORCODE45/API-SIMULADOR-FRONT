@@ -16,7 +16,7 @@ export const TablePower2 = ({ data, columns, list }) => {
           data={data}
           columns={columns}
           defaultPageSize={10} // Puedes ajustar el tamaño de página según tus necesidades
-          className="-striped -highlight"
+          className="container-md"
         />
         <hr/>
     </StyledTableWrapper>

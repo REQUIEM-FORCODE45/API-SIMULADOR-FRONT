@@ -3,6 +3,7 @@ import styled from "styled-components";
 import ReactJson from 'react-json-view';
 import { organizeByType } from "../helpers/organizeByType";
 import { TablePower2 } from "../components/showTablePower2";
+import { useNavigate } from "react-router-dom";
 
 
 export const Simulacion = ({data}) => {
@@ -14,8 +15,14 @@ export const Simulacion = ({data}) => {
     } ); 
     
     const {organizedData, columns, types} = postResult;
+ 
+    const nav = useNavigate();
 
-    const handleButtonClick = () => {
+    const onNavigateBack = () =>{
+        nav(-1);
+    }    
+
+    const handleButtonClick = async() => {
 
         const requestOptions = {
             method: 'POST',
@@ -23,31 +30,26 @@ export const Simulacion = ({data}) => {
             body: JSON.stringify( data ),
         };
 
-        fetch('http://localhost:3000/', requestOptions)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data2=>{
-            const {objects} = data2;
-            const formData = organizeByType(objects);
-            setPostResult(formData);
-            
-        })
-        .catch(error => {
-            console.error('There was a problem with the fetch operation:', error);
-        });
+        const resp = await fetch('http://localhost:3000/', requestOptions)
+        if (!resp.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const {objects} = await resp.json();
+        const formData = organizeByType(objects);
+        setPostResult(formData);
     }; 
 
   return (
     <Container>
-        <h1>Resultados</h1>
+        <h1>Result</h1>
+        <button className="btn btn-outline-primary"
+                onClick={onNavigateBack}>
+                        Return
+        </button>
+        <br/><br/>        
         {/* Botón para realizar la solicitud POST */}
         <button className="btn btn-primary" onClick={handleButtonClick}>Obtener resultado simulacion</button>
-        { postResult  &&( types.map( (list) =><TablePower2 data={organizedData[list]} columns={columns[list]} list={list}/> )
-        )} 
+        { postResult  && ( types.map( (list) =><TablePower2 data={organizedData[list]} columns={columns[list]} list={list}/> )) } 
     </Container>
   )
 }

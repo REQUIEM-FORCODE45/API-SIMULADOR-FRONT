@@ -8,6 +8,7 @@ import 'ace-builds/src-noconflict/mode-c_cpp';
 import 'ace-builds/src-noconflict/theme-github';
 import styled from "styled-components";
 import "./App.css"
+import { useNavigate } from 'react-router-dom';
 
 export const Newproject = ({setData}) => {
 
@@ -15,9 +16,14 @@ export const Newproject = ({setData}) => {
   const [showTable, setShowTable] = useState(false);
   const [tableData, setTableData] = useState([]);
 
-
   const onDataChange = ({target}) =>{
     setMyValue( target.value ); 
+  }
+
+  const nav = useNavigate();
+
+  const onNavigateBack = () =>{
+      nav(-1);
   }
 
   const onKeyPress = (event) => {
@@ -81,38 +87,27 @@ export const Newproject = ({setData}) => {
     <div className="App">
       <header className="App-header">
        
-        <h1>Edición simulación </h1>
+        <h1> Edit simulation </h1>
 
-      
+        <button className="btn btn-outline-primary"
+                onClick={onNavigateBack}>
+                        Return
+        </button>
+        <br/><br/>
         <input 
-          className="btn btn-outline-secondary"
+          className="btn btn-outline-secondary "
           type="file"
           multiple={ false }
           onChange={ readFile }
         />
 
-        <br/> <br/>
-        {/*<AceEditor
-          mode="c_cpp"
-          theme="github"
-          name="code_editor"
-          fontSize={14}
-          value={ myValue }
-          onChange={onDataChange}
-          onKeyDown={onKeyPress}
-          setOptions={{
-            enableBasicAutocompletion: true,
-            enableLiveAutocompletion: true,
-            enableSnippets: true,
-          }}
-          style={{ width: '100%', height: '320px' }}
-        />*/}
+        <br/><br/>
 
         <textarea
           className='form-control'
           cols="100"
           rows="10"
-          placeholder="Ingrese lo que desea grabar"
+          placeholder="insert the simulation text"
           value={ myValue }
           onChange={onDataChange}
           onKeyDown={onKeyPress}>

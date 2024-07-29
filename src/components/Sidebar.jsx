@@ -86,21 +86,17 @@ export function Sidebar({ sidebarOpen, setSidebarOpen }) {
 //#region Data links
 const linksArray = [
   {
-    label: "Nuevo proyecto",
+    label: "Projects",
     icon: <AiFillApi />,
-    to: "/",
+    to: "/projects",
   },
-  {
-    label: "Simulacion",
-    icon: <AiOutlinePaperClip />,
-    to: "/Simulacion",
-  }, 
   {
     label: "Visualizacion",
     icon: <AiOutlineProject />,
     to: "/Visualizacion",
   },    
 ];
+
 const secondarylinksArray = [
   {
     label: "Configuración",
