@@ -15,7 +15,7 @@ export const TablePower2 = ({ data, columns, list }) => {
         <ReactTable
           data={data}
           columns={columns}
-          defaultPageSize={10} // Puedes ajustar el tamaño de página según tus necesidades
+          defaultPageSize={5} // Puedes ajustar el tamaño de página según tus necesidades
           className="container-md"
         />
         <hr/>
