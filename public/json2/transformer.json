@@ -1,0 +1,33 @@
+{
+    "transformer": {
+      "name":"",
+      "parent": "",
+      "phases": "",
+      "nominal_voltage": "",
+      "status": "",
+      "from": "",
+      "to": "",
+      "fault_voltage_A": "",
+      "fault_voltage_B": "",
+      "fault_voltage_C": "",
+      "mean_repair_time": "",
+      "continuous_rating": "",
+      "emergency_rating": "",
+      "inrush_convergence_value": "",
+      "violation_rating": "",
+      "configuration": "",
+      "climate": "",
+      "ambient_temperature": "",
+      "use_thermal_model": "",
+      "aging_constant": "",
+      "aging_granularity": "",
+      "phase_A_primary_flux_value": "",
+      "phase_B_primary_flux_value": "",
+      "phase_C_primary_flux_value": "",
+      "phase_A_secondary_flux_value": "",
+      "phase_B_secondary_flux_value": "",
+      "phase_C_secondary_flux_value": "",
+      "degradation_factor": ""
+    }
+}
+  

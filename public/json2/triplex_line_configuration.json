@@ -1,0 +1,20 @@
+{
+    "triplex_line_configuration": {
+      "parent": "",
+      "conductor_1": "",
+      "conductor_2": "",
+      "conductor_N": "",
+      "insulation_thickness": "",
+      "diameter": "",
+      "spacing": "",
+      "z11": "",
+      "z12": "",
+      "z21": "",
+      "z22": "",
+      "rating.summer.continuous": "",
+      "rating.summer.emergency": "",
+      "rating.winter.continuous": "",
+      "rating.winter.emergency": ""
+    }
+  }
+  

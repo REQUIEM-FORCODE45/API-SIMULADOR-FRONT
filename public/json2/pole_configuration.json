@@ -1,0 +1,31 @@
+{
+    "pole_configuration": {
+      "name": "",
+      "parent": "",
+      "pole_type": "",
+      "design_ice_thickness": "",
+      "design_wind_loading": "",
+      "design_temperature": "",
+      "overload_factor_vertical": "",
+      "overload_factor_transverse_general": "",
+      "overload_factor_transverse_crossing": "",
+      "overload_factor_transverse_wire": "",
+      "overload_factor_longitudinal_general": "",
+      "overload_factor_longitudinal_deadend": "",
+      "strength_factor_250b_wood": "",
+      "strength_factor_250b_support": "",
+      "strength_factor_250c_wood": "",
+      "strength_factor_250c_support": "",
+      "pole_length": "",
+      "pole_depth": "",
+      "ground_diameter": "",
+      "top_diameter": "",
+      "fiber_strength": "",
+      "repair_time": "",
+      "degradation_rate": "",
+      "treatment_method": "",
+      "material_density": "",
+      "wind_overdesign": ""
+    }
+  }
+  

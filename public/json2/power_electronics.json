@@ -1,0 +1,21 @@
+{
+    "power_electronics": {
+      "name":"",
+      "parent":"",
+      "generator_mode": "",
+      "generator_status": "",
+      "converter_type": "",
+      "switch_type": "",
+      "filter_type": "",
+      "filter_implementation": "",
+      "filter_frequency": "",
+      "power_type": "",
+      "Rated_kW": "",
+      "Max_P": "",
+      "Min_P": "",
+      "Rated_kVA": "",
+      "Rated_kV": "",
+      "phases": ""
+    }
+  }
+  

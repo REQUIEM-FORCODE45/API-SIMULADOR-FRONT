@@ -1,0 +1,26 @@
+{
+    "energy_storage": {
+      "name":"",
+      "parent": "",
+      "generator_mode": "",
+      "generator_status": "",
+      "power_type": "",
+      "Rinternal": "",
+      "V_Max": "",
+      "I_Max": "",
+      "E_Max": "",
+      "Energy": "",
+      "efficiency": "",
+      "Rated_kVA": "",
+      "V_Out": "",
+      "I_Out": "",
+      "VA_Out": "",
+      "V_In": "",
+      "I_In": "",
+      "V_Internal": "",
+      "I_Internal": "",
+      "I_Prev": "",
+      "phases": ""     
+    }
+  }
+  

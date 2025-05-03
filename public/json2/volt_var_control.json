@@ -1,0 +1,24 @@
+{
+    "volt_var_control": {
+      "control_method": "",
+      "capacitor_delay": "",
+      "regulator_delay": "",
+      "desired_pf": "",
+      "d_max": "",
+      "d_min": "",
+      "substation_link": "",
+      "pf_phase": "",
+      "regulator_list": "",
+      "capacitor_list": "",
+      "voltage_measurements": "",
+      "minimum_voltages": "",
+      "maximum_voltages": "",
+      "desired_voltages": "",
+      "max_vdrop": "",
+      "high_load_deadband": "",
+      "low_load_deadband": "",
+      "pf_signed": "",
+      "parent": ""
+    }
+  }
+  

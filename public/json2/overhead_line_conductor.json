@@ -1,0 +1,17 @@
+{
+  "overhead_line_conductor": {
+      "name": "",
+      "parent": "",
+      "geometric_mean_radius": "",
+      "resistance": "",
+      "diameter": "",
+      "rating_summer_continuous": "",
+      "rating_summer_emergency": "",
+      "rating_winter_continuous": "",
+      "rating_winter_emergency": "",
+      "weight": "",
+      "strength": ""
+  }
+}
+
+  

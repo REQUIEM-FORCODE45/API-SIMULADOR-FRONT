@@ -1,0 +1,12 @@
+{
+    "triplex_line_conductor": {
+      "parent": "",
+      "resistance": "",
+      "geometric_mean_radius": "",
+      "rating.summer.continuous": "",
+      "rating.summer.emergency": "",
+      "rating.winter.continuous": "",
+      "rating.winter.emergency": ""
+    }
+  }
+  

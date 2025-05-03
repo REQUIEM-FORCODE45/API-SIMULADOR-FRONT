@@ -6,7 +6,7 @@ import { organizeObjects } from "../helpers/organizeObjects";
 import { TablePower2 } from "./showTablePower2";
 import { ShowClassPower } from "./showClassPower";
 import { useContext, useEffect, useState } from "react";
-import { ThemeContext } from "../App";
+import { ThemeContext } from "../context/ThemeContext";
 import { organizeByType } from "../helpers/organizeByType";
 import { CgLock } from "react-icons/cg";
 import { TfiControlShuffle } from "react-icons/tfi";
@@ -108,7 +108,10 @@ export const View = () => {
                 
                 <button className="btn btn-outline-primary"
                         onClick={onNavigateResults}
-                    >Edit Network
+                >
+                        
+                    Edit Network
+
                 </button>
 
                 <div className="p-0 justify-content-center" >
@@ -116,15 +119,21 @@ export const View = () => {
                     <h4>{projectId}</h4>
                     <button className="btn btn-outline-primary"
                             onClick={handleButtonClick}
-                    >Get result
+                    >
+
+                        Get result
+
                     </button>
                     { postResult  && ( types.map( (list) =><TablePower2 data={organizedData[list]} columns={columns2[list]} list={list}/> )) } 
                 </div>
 
                 <hr/>                
                 <button className="btn btn-outline-primary"
-                        onClick={onNavigateBack}>
+                        onClick={onNavigateBack}
+                >
+
                             Return
+
                 </button>
                 
             </div>

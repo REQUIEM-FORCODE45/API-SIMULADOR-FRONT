@@ -1,0 +1,1 @@
+export { default as simuladorApi } from './simuladorApi';

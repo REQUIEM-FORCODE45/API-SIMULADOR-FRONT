@@ -1,0 +1,16 @@
+{
+    "central_dg_control": {
+      "name":"",
+      "parent": "",
+      "controlled_dgs": "",
+      "feederhead_meter": "",
+      "control_mode_0": "",
+      "control_mode_1": "",
+      "control_mode_2": "",
+      "control_mode_3": "",
+      "peak_S": 0.0,
+      "pf_low": 0.0,
+      "pf_high": 0.0
+    }
+  }
+  

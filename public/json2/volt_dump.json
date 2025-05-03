@@ -1,0 +1,12 @@
+{
+    "voltdump": {
+        "group": "",
+        "runtime": "",
+        "filename": "",
+        "maxcount": "",
+        "mode": "",
+        "filemode": "",
+        "version": "",
+        "interval": ""
+    }
+}

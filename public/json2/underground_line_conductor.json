@@ -1,0 +1,20 @@
+{
+    "underground_line_conductor": {
+      "name": "",
+      "outer_diameter": "",
+      "conductor_gmr": "",
+      "conductor_diameter": "",
+      "conductor_resistance": "",
+      "neutral_gmr": "",
+      "neutral_diameter": "",
+      "neutral_resistance": "",
+      "neutral_strands": "",
+      "shield_thickness": "",
+      "shield_diameter": "",
+      "insulation_relative_permitivitty": "",
+      "shield_gmr": "",
+      "shield_resistance": "",
+      "insulation_R": ""
+    }
+  }
+  

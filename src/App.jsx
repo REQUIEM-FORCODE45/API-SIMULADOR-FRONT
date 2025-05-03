@@ -3,10 +3,15 @@ import reactLogo from "./assets/react.svg";
 import { MyRoutes } from "./routers/routes";
 import styled from "styled-components";
 import { BrowserRouter } from "react-router-dom";
-import { Sidebar } from "./components/Sidebar";
 import { Light, Dark } from "./styles/Themes";
 import { ThemeProvider } from "styled-components";
-export const ThemeContext = React.createContext(null);
+import { Provider } from 'react-redux';
+import { LoginRoutes } from "./routers/LoginRoutes";
+import { ThemeContext } from "./context/ThemeContext";
+import { store } from './store';
+import { SidebarProvider } from "./context/SidebarContext";
+
+
 function App() {
   const [theme, setTheme] = useState("light");
   const themeStyle = theme === "light" ? Light : Dark;
@@ -14,19 +19,19 @@ function App() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   return (
     <>
-      <ThemeContext.Provider value={{ setTheme, theme }}>
-        <ThemeProvider theme={themeStyle}>
-          <BrowserRouter>
-            <Container className={sidebarOpen ? "sidebarState active" : ""}>
-              <Sidebar
-                sidebarOpen={sidebarOpen}
-                setSidebarOpen={setSidebarOpen}
-              />
-              <MyRoutes />
-            </Container>
-          </BrowserRouter>
-        </ThemeProvider>
-      </ThemeContext.Provider>
+      <SidebarProvider>
+        <Provider store={ store }>
+          <ThemeContext.Provider value={{ setTheme, theme, sidebarOpen, setSidebarOpen  }}>
+            <ThemeProvider theme={themeStyle}>
+              <BrowserRouter>
+                <Container className={sidebarOpen ? "sidebarState active" : ""}>
+                  <LoginRoutes />
+                </Container>
+              </BrowserRouter>
+            </ThemeProvider>
+          </ThemeContext.Provider>
+        </Provider>
+      </SidebarProvider>
     </>
   );
 }

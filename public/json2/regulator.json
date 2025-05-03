@@ -1,0 +1,22 @@
+{
+    "regulator": {
+      "parent": "",
+      "phases": "",
+      "nominal_voltage": "",
+      "status": "",
+      "from": "",
+      "to": "",
+      "mean_repair_time": "",
+      "continuous_rating": "",
+      "emergency_rating": "",
+      "inrush_convergence_value": "",
+      "violation_rating": "",
+      "configuration": "",
+      "tap_A": "",
+      "tap_B": "",
+      "tap_C": "",
+      "sense_node": "",
+      "regulator_resistance": ""
+    }
+  }
+  

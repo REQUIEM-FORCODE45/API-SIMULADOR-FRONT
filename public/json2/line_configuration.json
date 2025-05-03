@@ -1,0 +1,32 @@
+{
+    "line_configuration": {
+        "name":"",
+        "conductor_A": "",
+        "conductor_B": "",
+        "conductor_C": "",
+        "conductor_N": "",
+        "spacing": "",
+        "z11": "",
+        "z12": "",
+        "z13": "",
+        "z21": "",
+        "z22": "",
+        "z23": "",
+        "z31": "",
+        "z32": "",
+        "z33": "",
+        "c11": "",
+        "c12": "",
+        "c13": "",
+        "c21": "",
+        "c22": "",
+        "c23": "",
+        "c31": "",
+        "c32": "",
+        "c33": "",
+        "rating.summer.continuous": "",
+        "rating.summer.emergency": "",
+        "rating.winter.continuous": "",
+        "rating.winter.emergency": ""
+    }
+}

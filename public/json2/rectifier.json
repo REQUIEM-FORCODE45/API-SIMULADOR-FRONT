@@ -1,0 +1,26 @@
+{
+    "rectifier": {
+      "name":"",
+      "parent":"",
+      "rectifier_type": "",
+      "generator_mode": "",
+      "V_Out": "",
+      "V_Rated": "",
+      "I_Out": "",
+      "VA_Out": "",
+      "P_Out": "",
+      "Q_Out": "",
+      "Vdc": "",
+      "voltage_A": "",
+      "voltage_B": "",
+      "voltage_C": "",
+      "current_A": "",
+      "current_B": "",
+      "current_C": "",
+      "power_A_In": "",
+      "power_B_In": "",
+      "power_C_In": "",
+      "phases": ""
+    }
+  }
+  

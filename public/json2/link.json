@@ -1,0 +1,17 @@
+{
+    "link": {
+      "name":"",
+      "parent": "",
+      "phases": "",
+      "nominal_voltage": "V",
+      "status": "",
+      "from": "",
+      "to": "",
+      "mean_repair_time": "",
+      "continuous_rating": "",
+      "emergency_rating": "",
+      "inrush_convergence_value": "",
+      "violation_rating": ""
+    }
+  }
+  

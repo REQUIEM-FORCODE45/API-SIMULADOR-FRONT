@@ -1,0 +1,23 @@
+{
+    "fuse": {
+        "name":"",
+        "parent": "",
+        "set_phases": "",
+        "nominal_voltage": "",
+        "from": "",
+        "to": "",
+        "status": "",
+        "mean_repair_time": "",
+        "continuous_rating": "",
+        "emergency_rating": "",
+        "inrush_convergence_value": "",
+        "violation_rating": "",
+        "phase_A_status": "",
+        "phase_B_status": "",
+        "phase_C_status": "",
+        "repair_dist_type": "",
+        "current_limit": "",
+        "mean_replacement_time": "",
+        "fuse_resistance": ""
+    }
+}

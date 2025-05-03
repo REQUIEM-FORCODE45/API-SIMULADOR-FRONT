@@ -1,0 +1,30 @@
+{
+    "regulator_configuration": {
+      "connect_type": "",
+      "band_center": "",
+      "band_width": "",
+      "time_delay": "",
+      "dwell_time": "",
+      "raise_taps": "",
+      "lower_taps": "",
+      "current_transducer_ratio": "",
+      "power_transducer_ratio": "",
+      "compensator_r_setting_A": "",
+      "compensator_r_setting_B": "",
+      "compensator_r_setting_C": "",
+      "compensator_x_setting_A": "",
+      "compensator_x_setting_B": "",
+      "compensator_x_setting_C": "",
+      "CT_phase": "",
+      "PT_phase": "",
+      "regulation": "",
+      "control_level": "",
+      "Control": "",
+      "reverse_flow_control": "",
+      "Type": "",
+      "tap_pos_A": "",
+      "tap_pos_B": "",
+      "tap_pos_C": ""
+    }
+  }
+  

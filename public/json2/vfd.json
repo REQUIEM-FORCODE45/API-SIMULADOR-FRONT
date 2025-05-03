@@ -1,0 +1,29 @@
+{
+    "vfd": {
+      "parent": "",
+      "phases": "",
+      "nominal_voltage": "",
+      "status": "",
+      "from": "",
+      "to": "",
+      "fault_voltage_A": "",
+      "fault_voltage_B": "",
+      "fault_voltage_C": "",
+      "mean_repair_time": "",
+      "continuous_rating": "",
+      "emergency_rating": "",
+      "inrush_convergence_value": "",
+      "violation_rating": "",
+      "rated_motor_speed": "",
+      "desired_motor_speed": "",
+      "motor_poles": "",
+      "rated_output_voltage": "",
+      "rated_horse_power": "",
+      "nominal_output_frequency": "",
+      "desired_output_frequency": "",
+      "efficiency": "",
+      "stable_time": "",
+      "vfd_state": ""
+    }
+  }
+  

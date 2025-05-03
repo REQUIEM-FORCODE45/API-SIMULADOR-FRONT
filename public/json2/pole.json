@@ -1,0 +1,16 @@
+{
+    "pole": {
+      "status": "",
+      "tilt_angle": "",
+      "tilt_direction": "",
+      "weather": "",
+      "configuration": "",
+      "install_year": "",
+      "repair_time": "",
+      "wind_speed": "",
+      "wind_direction": "",
+      "wind_gusts": "",
+      "guy_height": ""
+    }
+  }
+  

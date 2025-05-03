@@ -1,0 +1,22 @@
+{
+  "overhead_line": {
+      "name": "",
+      "parent": "",
+      "phases": "",
+      "nominal_voltage": "",
+      "status": "",
+      "from": "",
+      "to": "",
+      "mean_repair_time": "",
+      "continuous_rating": "",
+      "emergency_rating": "",
+      "inrush_convergence_value": "",
+      "violation_rating": "",
+      "configuration": "",
+      "length": "",
+      "ice_thickness": "",
+      "is_covered": ""
+  }
+}
+
+  

@@ -1,0 +1,25 @@
+{
+    "recloser": {
+        "parent_switch": "",
+        "phases": "",
+        "nominal_voltage": "",
+        "status": "",
+        "from": "",
+        "to": "",
+        "mean_repair_time": "",
+        "continuous_rating": "",
+        "emergency_rating": "",
+        "inrush_convergence_value": "",
+        "violation_rating": "",
+        "phase_A_state": "",
+        "phase_B_state": "",
+        "phase_C_state": "",
+        "operating_mode": "",
+        "switch_impedance": "",
+        "switch_resistance": "",
+        "switch_reactance": "",
+        "retry_time": "",
+        "max_number_of_tries": ""
+    }
+}
+

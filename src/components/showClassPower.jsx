@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react"
-import { ThemeContext } from "../App";
-
+import { ThemeContext } from "../context/ThemeContext";
 
 export const ShowClassPower = ({title, length, setTable}) => {
     const { setTheme, theme } = useContext(ThemeContext);

@@ -1,27 +1,75 @@
-import styled from "styled-components";
+// Sidebar.js
+import React from 'react';
+import styled from 'styled-components';
+import { useSidebar } from '../context/SidebarContext';
 import logo from "../assets/udenar.png";
 import { v } from "../styles/Variables";
-import {
-  AiOutlineLeft,
-  AiOutlineHome,
-  AiOutlineApartment,
-  AiOutlineProject,
-  AiOutlineSetting,
-  AiFillApi,
-  AiOutlinePaperClip,
-} from "react-icons/ai";
-import { MdOutlineAnalytics, MdLogout } from "react-icons/md";
-import { NavLink } from "react-router-dom";
+import { AiOutlineLeft, AiOutlineProject, AiOutlineSetting, AiFillApi, AiOutlineUser } from "react-icons/ai";
+import { MdOutlineAnalytics, MdLogout} from "react-icons/md";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import { ThemeContext } from "../App";
-export function Sidebar({ sidebarOpen, setSidebarOpen }) {
+import { ThemeContext } from "../context/ThemeContext";
+import { useAuthStore } from "../hooks/useAuthStore";
+import { FaHome, FaRegTrashAlt } from 'react-icons/fa';
+import Swal from 'sweetalert2';
+import simuladorNode from '../api/SimuladorNodes';
+
+export const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
+  const { links, updateLinks } = useSidebar(); // Obtén los enlaces del contexto
+  const { startLogout, user } = useAuthStore();
+  const nav = useNavigate();
   const ModSidebaropen = () => {
     setSidebarOpen(!sidebarOpen);
   };
+
   const { setTheme, theme } = useContext(ThemeContext);
   const CambiarTheme = () => {
     setTheme((theme) => (theme === "light" ? "dark" : "light"));
   };
+
+  const handleDelete = async (id) => {
+    try {
+      const result = await Swal.fire({
+        title: '¿Estás seguro?',
+        text: 'No podrás recuperar este proyecto después de eliminarlo.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar',
+        reverseButtons: true,
+      });
+  
+      if (result.isConfirmed) {
+        // Llama a la API para eliminar el proyecto
+        const response = await simuladorNode.delete(`delete-network/${id}`);
+        
+        if (response.status === 200) {
+          Swal.fire('¡Eliminado!', 'El proyecto ha sido eliminado exitosamente.', 'success');
+          setTimeout( nav("/"), 500);
+        } else {
+          Swal.fire('Error', 'No se pudo eliminar el proyecto. Intenta nuevamente.', 'error');
+        }       
+      }
+
+    } catch (error) {
+      Swal.fire('Error', 'Ocurrió un error al intentar eliminar el proyecto.', 'error');
+      console.error('Error al eliminar el proyecto:', error);
+    }
+  };
+
+  const secondarylinksArray = [
+    {
+      label: "Home",
+      icon: <FaHome />,
+      to: "/",
+    },
+    /*
+    {
+      label: "Salir",
+      icon: <MdLogout />,
+      to: "/null",
+    },*/
+  ];
 
   return (
     <Container isOpen={sidebarOpen} themeUse={theme}>
@@ -33,21 +81,39 @@ export function Sidebar({ sidebarOpen, setSidebarOpen }) {
         <div className="imgcontent">
           <img src={logo} />
         </div>
-        
       </div>
-      {linksArray.map(({ icon, label, to }) => (
-        <div className="LinkContainer" key={label}>
-          <NavLink
-            to={to}
-            className={({ isActive }) => `Links${isActive ? ` active` : ``}`}
-          >
-            <div className="Linkicon">{icon}</div>
-            {sidebarOpen && <span>{label}</span>}
-          </NavLink>
-        </div>
-      ))}
 
-     {/* <Divider />
+      <ScrollableContainer>
+        {links.map(({ label, to }) => {
+          // Verifica si la ruta contiene "/GraphNetwork/" y extrae el projectId
+          const match = to.match(/\/GraphNetwork\/([^/]+)/);
+          const projectId = match ? match[1] : null;
+
+          return (
+            <div className="LinkContainer" style={ {display: "flex"}} key={label}>
+              <NavLink
+                to={to}
+                className={({ isActive }) => `Links${isActive ? ` active` : ``}`}
+              >
+                <div className="Linkicon">{<AiFillApi />}</div>
+                {sidebarOpen && <span>{label}</span>}
+              </NavLink>
+              {(projectId && sidebarOpen) && (
+                <span
+                  className="DeleteButton"
+                  onClick={() => handleDelete(projectId)}
+                  style={{ margin: 'auto' }} // Asegura que el icono quede a la derecha
+                >
+                  {<FaRegTrashAlt />}
+                </span>
+              )}
+            </div>
+          );
+        })}
+      </ScrollableContainer>
+
+      <Divider />
+
       {secondarylinksArray.map(({ icon, label, to }) => (
         <div className="LinkContainer" key={label}>
           <NavLink
@@ -59,7 +125,7 @@ export function Sidebar({ sidebarOpen, setSidebarOpen }) {
           </NavLink>
         </div>
       ))}
-      <Divider />*/}
+
       <div className="Themecontent">
         {sidebarOpen && <span className="titletheme">Dark mode</span>}
         <div className="Togglecontent">
@@ -80,38 +146,20 @@ export function Sidebar({ sidebarOpen, setSidebarOpen }) {
           </div>
         </div>
       </div>
+      <Divider />
+      <div className="LinkContainer">
+        <div className="Linkicon p-5">{<AiOutlineUser />} {sidebarOpen && <span>{user.name}</span>}</div>
+        <button type="button" 
+                className="btn btn-outline-primary " 
+                onClick={startLogout}
+        >   
+          <div className="Linkicon"> {<MdLogout />}  {sidebarOpen && <span>{"Logout"}</span>} </div>
+        </button>
+      </div>
     </Container>
   );
 }
-//#region Data links
-const linksArray = [
-  {
-    label: "Projects",
-    icon: <AiFillApi />,
-    to: "/projects",
-  },
-  {
-    label: "Visualizacion",
-    icon: <AiOutlineProject />,
-    to: "/Visualizacion",
-  },    
-];
 
-const secondarylinksArray = [
-  {
-    label: "Configuración",
-    icon: <AiOutlineSetting />,
-    to: "/null",
-  },
-  {
-    label: "Salir",
-    icon: <MdLogout />,
-    to: "/null",
-  },
-];
-//#endregion
-
-//#region STYLED COMPONENTS
 const Container = styled.div`
   color: ${(props) => props.theme.text};
   background: ${(props) => props.theme.bg};
@@ -158,16 +206,16 @@ const Container = styled.div`
       }
       cursor: pointer;
       transition: all 0.3s;
-      transform: ${({ isOpen }) => (isOpen ? `scale(0.7)` : `scale(0.5)`)};
+      transform: ${({ isOpen }) => (isOpen ? `scale(0.6)` : `scale(0.5)`)};
     }
     h2 {
       display: ${({ isOpen }) => (isOpen ? `block` : `none`)};
     }
   }
   .LinkContainer {
-    margin: 8px 0;
-   
-    padding: 0 15%;
+    margin: 6px 0px;
+    
+    padding: 0 10%;
     :hover {
       background: ${(props) => props.theme.bg3};
     }
@@ -177,7 +225,7 @@ const Container = styled.div`
       text-decoration: none;
       padding: calc(${v.smSpacing}-2px) 0;
       color: ${(props) => props.theme.text};
-      height:50px;
+      height:40px;
       .Linkicon {
         padding: ${v.smSpacing} ${v.mdSpacing};
         display: flex;
@@ -284,4 +332,8 @@ const Divider = styled.div`
   background: ${(props) => props.theme.bg3};
   margin: ${v.lgSpacing} 0;
 `;
-//#endregion
+const ScrollableContainer = styled.div`
+    max-height: 22vh; 
+    overflow-y: auto; 
+    border-radius: 2px; 
+`;

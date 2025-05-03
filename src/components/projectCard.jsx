@@ -1,12 +1,13 @@
 import { Link, useNavigate } from "react-router-dom"
 import styled from "styled-components";
-import { ThemeContext } from "../App";
+
 import { useContext } from "react";
+import { ThemeContext } from "../context/ThemeContext";
 
 
 export const Card1 = ({ project_name, description, id_network}) => {
 
-  const { setTheme, theme } = useContext(ThemeContext);
+  const { setTheme, theme } = useContext( ThemeContext );
   const nav = useNavigate();
   const onNavigateBack = () =>{
     nav(`/view/${id_network }`);

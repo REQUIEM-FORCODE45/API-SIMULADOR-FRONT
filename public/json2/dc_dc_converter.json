@@ -1,0 +1,21 @@
+{
+    "dc_dc_converter": {
+      "name":"",
+      "parent": "",
+      "dc_dc_converter_type": "",
+      "generator_mode": "",
+      "V_Out": "",
+      "I_Out": "",
+      "Vdc": "",
+      "VA_Out": "",
+      "P_Out": "",
+      "Q_Out": "",      
+      "service_ratio": "",
+      "V_In": "",
+      "I_In": "",
+      "VA_In": "",
+      "phases": ""
+      
+    }
+  }
+  
