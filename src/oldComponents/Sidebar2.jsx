@@ -2,7 +2,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useSidebar } from '../context/SidebarContext';
-import logo from "../assets/udenar_b.png";
+import logo from "../assets/udenar.png";
 import { v } from "../styles/Variables";
 import { AiOutlineLeft, AiOutlineProject, AiOutlineSetting, AiFillApi, AiOutlineUser } from "react-icons/ai";
 import { MdOutlineAnalytics, MdLogout} from "react-icons/md";
@@ -10,8 +10,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { ThemeContext } from "../context/ThemeContext";
 import { useAuthStore } from "../hooks/useAuthStore";
-import { FaHome, FaRegTrashAlt, FaSolarPanel, FaRegEdit, FaPlay, FaFileImport  } from 'react-icons/fa';
-import { PiGraph } from "react-icons/pi";
+import { FaHome, FaRegTrashAlt } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import simuladorNode from '../api/SimuladorNodes';
 
@@ -58,25 +57,6 @@ export const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     }
   };
 
-  const getLinkIcon = (label) => {
-    switch (label) {
-      case "Graph Network":
-        return <PiGraph />;
-      case "Graph Time series":
-        return <MdOutlineAnalytics />;
-      case "Edit Project":
-        return <FaRegEdit />;
-      case "View Result":
-        return <FaPlay  />;
-      case "Data panel":
-        return <FaSolarPanel />;
-      case "File Manager":
-        return <FaFileImport />;
-      default:
-        return <AiFillApi />;
-    }
-  };
-
   const secondarylinksArray = [
     {
       label: "Home",
@@ -97,7 +77,7 @@ export const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
         <AiOutlineLeft />
       </button>
       <div className="Logocontent">
-
+        <h2>Menu</h2>
         <div className="imgcontent">
           <img src={logo} />
         </div>
@@ -111,16 +91,13 @@ export const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
 
           return (
             <div className="LinkContainer" style={ {display: "flex"}} key={label}>
-              
               <NavLink
                 to={to}
                 className={({ isActive }) => `Links${isActive ? ` active` : ``}`}
               >
-                <div className="Linkicon">{getLinkIcon(label)}</div>
+                <div className="Linkicon">{<AiFillApi />}</div>
                 {sidebarOpen && <span>{label}</span>}
-                
               </NavLink>
-
               {(projectId && sidebarOpen) && (
                 <span
                   className="DeleteButton"
@@ -130,13 +107,12 @@ export const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                   {<FaRegTrashAlt />}
                 </span>
               )}
-
             </div>
           );
         })}
       </ScrollableContainer>
 
-  
+      <Divider />
 
       {secondarylinksArray.map(({ icon, label, to }) => (
         <div className="LinkContainer" key={label}>
@@ -170,31 +146,25 @@ export const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
           </div>
         </div>
       </div>
-      
+      <Divider />
       <div className="LinkContainer">
-
-        <div className="Linkicon p-4">{<AiOutlineUser />} {sidebarOpen && <span>{user.name}</span>}</div>
-
-        <LogoutButton 
-                type="button" 
+        <div className="Linkicon p-5">{<AiOutlineUser />} {sidebarOpen && <span>{user.name}</span>}</div>
+        <button type="button" 
+                className="btn btn-outline-primary " 
                 onClick={startLogout}
         >   
           <div className="Linkicon"> {<MdLogout />}  {sidebarOpen && <span>{"Logout"}</span>} </div>
-        </LogoutButton>
+        </button>
       </div>
     </Container>
   );
 }
 
 const Container = styled.div`
-  color: #fff;  /* Fuerza el color blanco para todo el texto */
-  background: ${(props) =>
-    props.themeUse === "light" ? "#009640" : "#3c3c3b"};
-  transition: background 0.4s ease, color 0.4s ease;
-  border-radius: 8px; 
+  color: ${(props) => props.theme.text};
+  background: ${(props) => props.theme.bg};
   position: sticky;
   padding-top: 20px;
-  height: 100vh;
   .Sidebarbutton {
     position: absolute;
     top: ${v.xxlSpacing};
@@ -203,87 +173,76 @@ const Container = styled.div`
     height: 32px;
     border-radius: 50%;
     background: ${(props) => props.theme.bgtgderecha};
-    box-shadow: 0 0 4px ${(props) => props.theme.bg3}, 0 0 7px ${(props) => props.theme.bg};
+    box-shadow: 0 0 4px ${(props) => props.theme.bg3},
+      0 0 7px ${(props) => props.theme.bg};
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.3s ease, border-radius 0.3s ease;
+    transition: all 0.3s;
+    transform: ${({ isOpen }) => (isOpen ? `initial` : `rotate(180deg)`)};
     border: none;
-    color: #fff;
+    letter-spacing: inherit;
+    color: inherit;
     font-size: inherit;
     text-align: inherit;
     padding: 0;
     font-family: inherit;
     outline: none;
-    &:hover {
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    }
-    &:active {
-      border-radius: 16px;
-      transform: scale(0.95);
-    }
   }
-  
   .Logocontent {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-direction:row;
+    flex-wrap:wrap;
     justify-content: center;
     align-items: center;
+
     padding-bottom: ${v.lgSpacing};
     .imgcontent {
       display: flex;
       img {
-        max-width: 100%;
+        max-width:100%;
         height: auto;
       }
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.3s;
       transform: ${({ isOpen }) => (isOpen ? `scale(0.6)` : `scale(0.5)`)};
     }
     h2 {
       display: ${({ isOpen }) => (isOpen ? `block` : `none`)};
-      color: #fff;
     }
   }
-  
   .LinkContainer {
-    margin: 6px 0;
-    padding: 0 10%;
-    border-radius: 4px;
-    transition: background 0.3s ease, border-radius 0.3s ease;
-    :hover {
-      background: ${(props) =>
-        props.themeUse === "light" ? "#007431" : "#3a3a3a"};
-      border-radius: 8px;
-    }
+    margin: 6px 0px;
     
+    padding: 0 10%;
+    :hover {
+      background: ${(props) => props.theme.bg3};
+    }
     .Links {
       display: flex;
       align-items: center;
       text-decoration: none;
-      padding: calc(${v.smSpacing} - 2px) 0;
-      color: #fff;  /* Fuerza el color blanco en los enlaces */
-      height: 40px;
+      padding: calc(${v.smSpacing}-2px) 0;
+      color: ${(props) => props.theme.text};
+      height:40px;
       .Linkicon {
         padding: ${v.smSpacing} ${v.mdSpacing};
         display: flex;
+
         svg {
           font-size: 25px;
-          color: #fff;
         }
       }
       &.active {
         .Linkicon {
           svg {
-            color: #fff;
+            color: ${(props) => props.theme.bg4};
           }
         }
       }
     }
   }
-
   .Themecontent {
     display: flex;
     align-items: center;
@@ -293,21 +252,20 @@ const Container = styled.div`
       padding: 30px;
       font-weight: 700;
       opacity: ${({ isOpen }) => (isOpen ? `1` : `0`)};
-      transition: all 0.3s ease;
+      transition: all 0.3s;
       white-space: nowrap;
       overflow: hidden;
-      color: #fff;
     }
     .Togglecontent {
       margin: ${({ isOpen }) => (isOpen ? `auto 40px` : `auto 15px`)};
       width: 36px;
       height: 20px;
       border-radius: 10px;
-      transition: all 0.4s ease;
+      transition: all 0.3s;
       position: relative;
       .theme-container {
         background-blend-mode: multiply, multiply;
-        transition: 0.4s ease;
+        transition: 0.4s;
         .grid {
           display: grid;
           justify-items: center;
@@ -329,7 +287,7 @@ const Container = styled.div`
               height: 0;
               &:checked + .slider:before {
                 left: 2px;
-                content: "•";
+                content: "🌑";
                 transform: translateX(16px);
               }
             }
@@ -340,22 +298,26 @@ const Container = styled.div`
               left: 0;
               right: 0;
               bottom: 0;
-              background: ${(props) =>
-                props.themeUse === "light" ? "#fbba00" : v.checkbox};
-              transition: background 0.4s ease, transform 0.4s ease;
+              background: ${({ themeUse }) =>
+                themeUse === "light" ? v.lightcheckbox : v.checkbox};
+
+              transition: 0.4s;
               &::before {
                 position: absolute;
-                content: "•";
-                height: 12px;
-                width: 12px;
-                left: 2px;
-                top: 0;
-                line-height: 16px;
-                transition: 0.4s ease;
-                border-radius: 50%;
+                content: "☀️";
+                height: 0px;
+                width: 0px;
+                left: -10px;
+                top: 16px;
+                line-height: 0px;
+                transition: 0.4s;
               }
               &.round {
-                border-radius: 12px;
+                border-radius: 34px;
+
+                &::before {
+                  border-radius: 50%;
+                }
               }
             }
           }
@@ -364,45 +326,14 @@ const Container = styled.div`
     }
   }
 `;
-  
-// Separador para diferenciar los botones fijos (usuario y logout)
 const Divider = styled.div`
   height: 1px;
   width: 100%;
-  background: ${(props) => props.themeUse === "light" ? "#00a650" : props.theme.bg3};
+  background: ${(props) => props.theme.bg3};
   margin: ${v.lgSpacing} 0;
 `;
-
-// También se puede ajustar el contenedor de usuario y logout, en caso de necesitar
-const UserSection = styled.div`
-  padding: 0 10%;
-  margin-top: ${v.lgSpacing};
-  .LinkContainer {
-    margin: 6px 0;
-    padding: 0;
-    border: none;
-    background: none;
-    &:hover {
-      background: none;
-    }
-  }
-`;
-
 const ScrollableContainer = styled.div`
-    max-height: 30vh; 
+    max-height: 22vh; 
     overflow-y: auto; 
     border-radius: 2px; 
-`;
-
-const LogoutButton = styled.button`
-  background: ${(props) => props.themeUse === "light" ? "#007431" : "transparent"};
-  border: ${(props) => props.themeUse === "light" ? "none" : "1px solid"};
-  color: ${(props) => props.theme.text};
-  border-radius: 4px;
-  padding: 8px 12px;
-  cursor: pointer;
-  transition: opacity 0.3s ease;
-  &:hover {
-    opacity: 0.9;
-  }
 `;

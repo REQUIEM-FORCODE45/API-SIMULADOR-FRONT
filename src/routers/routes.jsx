@@ -15,25 +15,44 @@ import { GraphPage } from "../pages/GraphPage";
 import DynamicForm from "../components/DynamicForm";
 import WebSocketComponent from "../pages/MqttSubscriber";
 import FileManager from "../pages/FileManager";
+import styled from "styled-components";
+
+const AppLayout = styled.div`
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+`;
+
+const SidebarContainer = styled.div`
+  flex-shrink: 0;
+  width: ${({ sidebarOpen }) => (sidebarOpen ? '300px' : '80px')};
+  min-height: 100vh;
+`;
+
+const MainContent = styled.div`
+  flex-grow: 1;
+  overflow-y: auto;
+`;
 
 export function MyRoutes() {
   
-  const {sidebarOpen, setSidebarOpen} = useContext( ThemeContext );
+  const {sidebarOpen, setSidebarOpen} = useContext(ThemeContext);
   const [sim, setSim] = useState({});
 
-  const onSetData = (value) =>{
+  const onSetData = (value) => {
     setSim(value);
-  }
-
+  };
 
   return (     
-      <>             
-        <Sidebar
+    <AppLayout>
+      <SidebarContainer sidebarOpen={sidebarOpen}>
+        <Sidebar 
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
-        />  
+        />
+      </SidebarContainer>
+      <MainContent>
         <Routes>
-
           {/*<Route path="/" element={<Newproject setData={onSetData} />} />*/}
           <Route path="/" element={<InitPage />} />
           <Route path="/Simulacion" element={<Simulacion data={sim}  />}/> 
@@ -48,10 +67,8 @@ export function MyRoutes() {
           <Route path="/Livepanel" element={<WebSocketComponent />}/>
           <Route path="/FileManager/:projectId" element={<FileManager />}/>
           <Route path="/*" element={ <Navigate to="/" /> } />
-
         </Routes>
-      </>
-     
-    
+      </MainContent>
+    </AppLayout>
   );
 }

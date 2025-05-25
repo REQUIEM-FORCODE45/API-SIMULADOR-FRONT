@@ -68,7 +68,7 @@ const StyledButton = styled.button`
   width: 200px; 
 
   &.btn-primary {
-    background-color: #007bff; 
+    background-color: #6699CC; 
     color: white;
 
     &:hover {

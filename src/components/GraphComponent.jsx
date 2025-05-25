@@ -17,7 +17,7 @@ const Graph = ({ nodes, links }) => {
   
     const svg = d3.select(svgRef.current)
       .attr('width', '80vw')
-      .attr('height', '88vh')
+      .attr('height', '80vh')
       .style('border', '1px solid black');
     
     const g = svg.append('g');
@@ -97,7 +97,10 @@ const Graph = ({ nodes, links }) => {
       .append('tspan')
       .attr('x', 0)
       .attr('dy', '1.5em')
-      .text(d => d);
+      .text(d => {
+        const key = Object.keys(d)[0];
+        return `${key}: ${d[key]}`;
+    });
   
     const linkLabels = g.append('g')
       .selectAll('text')

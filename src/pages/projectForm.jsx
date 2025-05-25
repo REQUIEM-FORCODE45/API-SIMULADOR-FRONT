@@ -8,7 +8,7 @@ import { useSidebar } from '../context/SidebarContext';
 import axios from 'axios';
 
 // Configuración
-const TOKEN  = 'f26d794830767c4b';
+const TOKEN  = '3f6e6440716a8097';
 const API_URL = `/api2/${TOKEN}`;
 
 

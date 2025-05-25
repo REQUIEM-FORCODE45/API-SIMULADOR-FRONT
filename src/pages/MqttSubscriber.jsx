@@ -143,15 +143,11 @@ const WebSocketComponent = () => {
                     hasta: endDate.toISOString(),
                 },
             });
-            const filteredData = response.data;
-
-            setTimestamps(filteredData.map(item => item.timestamp));
-            setFilteredData({
-                voltage: filteredData.map(item => item.voltaje),
-                corriente: filteredData.map(item => item.corriente),
-                factor_potencia: filteredData.map(item => item.factor_potencia),
-                fase: filteredData.map(item => item.fase),
-            });
+            // Se espera que la respuesta tenga la forma: { s1Data, s2Data, s3Data }
+            const { s1Data, s2Data, s3Data } = response.data;
+            // Actualiza filteredData y, para manejo de timestamps, toma el del sensor 1 (o podrías usar el activo)
+            setFilteredData({ s1Data, s2Data, s3Data });
+            setTimestamps(s1Data.map(item => item.timestamp));
         } catch (error) {
             console.error("Error al obtener los datos filtrados:", error);
         }
@@ -164,35 +160,45 @@ const WebSocketComponent = () => {
     const downloadCSV = async () => {
         try {
             let csvContent = "data:text/csv;charset=utf-8,";
-            csvContent += "Timestamp,Voltaje,Corriente,Factor Potencia,Fase\n";
+            // Se incluye la cabecera con las 7 columnas
+            csvContent += "Timestamp,Voltaje,Corriente,Potencia,Energia,Frecuencia,Factor Potencia\n";
 
-            filteredData.voltage.forEach((item, index) => {
-                csvContent += `${timestamps[index]},${item},${filteredData.corriente[index]},${filteredData.factor_potencia[index]},${filteredData.fase[index]}\n`;
+            // Selecciona los datos del sensor activo (ejemplo 's1Data' si activeSensor es 's1')
+            const sensorKey = `${activeSensor}Data`;
+            const sensorData = filteredData[sensorKey] || [];
+
+            sensorData.forEach(item => {
+                csvContent += `${item.timestamp},${item.v},${item.c},${item.p},${item.e},${item.f},${item.pf}\n`;
             });
 
             const blob = new Blob([decodeURIComponent(encodeURI(csvContent))], { type: 'text/csv;charset=utf-8;' });
-            saveAs(blob, 'filtered_livepanel_data.csv');
+            saveAs(blob, `filtered_livepanel_data_${activeSensor}.csv`);
             setIsExportModalOpen(false);
         } catch (error) {
-            console.error("Error al exportar los datos:", error);
+            console.error("Error al exportar los datos CSV:", error);
         }
     };
 
     const downloadPlayerFile = async () => {
         try {
             let fileContent = "data:text/plain;charset=utf-8,";
-            fileContent += "Timestamp,Voltaje,Corriente,Factor Potencia,Fase\n";
+            // Cabecera con las 7 columnas
+            fileContent += "Timestamp,Voltaje,Corriente,Potencia,Energia,Frecuencia,Factor Potencia\n";
 
-            filteredData.voltage.forEach((item, index) => {
-                const formattedDate = new Date(timestamps[index]).toISOString().replace('T', ' ').slice(0, 19);
-                fileContent += `${formattedDate},${item},${filteredData.corriente[index]},${filteredData.factor_potencia[index]},${filteredData.fase[index]}\n`;
+            const sensorKey = `${activeSensor}Data`;
+            const sensorData = filteredData[sensorKey] || [];
+
+            sensorData.forEach(item => {
+                // Formatea el timestamp si es necesario
+                const formattedDate = new Date(item.timestamp).toISOString().replace('T', ' ').slice(0, 19);
+                fileContent += `${formattedDate},${item.v},${item.c},${item.p},${item.e},${item.f},${item.pf}\n`;
             });
 
             const blob = new Blob([decodeURIComponent(encodeURI(fileContent))], { type: 'text/plain;charset=utf-8;' });
-            saveAs(blob, 'filtered_livepanel_data.player');
+            saveAs(blob, `filtered_livepanel_data_${activeSensor}.player`);
             setIsExportModalOpen(false);
         } catch (error) {
-            console.error("Error al exportar los datos:", error);
+            console.error("Error al exportar los datos del player:", error);
         }
     };
 
@@ -257,7 +263,7 @@ const WebSocketComponent = () => {
     };
 
     return (
-        <div style={{ margin: '0 auto', padding: '0 20px', maxWidth: '100%', minHeight: '100vh' }}>
+        <div style={{ margin: '0 auto', padding: '0 20px', maxWidth: '90%', minHeight: '100vh' }}>
             <FixedMenu themeStyle={themeStyle}>
                 <h1 className="text-center mb-4">Panel Data</h1>
                 <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'center', gap: '20px' }}>

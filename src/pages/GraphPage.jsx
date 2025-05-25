@@ -27,6 +27,26 @@ const EditObjects = [
     'windturb_dg', 'multi_recorder'
 ];
 
+const groupedEditObjects = {
+    Generators: [
+        'battery', 'central_dg_control', 'controller_dg', 'dc_dc_converter',
+        'diesel_dg', 'energy_storage', 'inverter', 'microturbine',
+        'power_electronics', 'rectifier', 'solar', 'windturb_dg'
+    ],
+    Powerflow: [
+        'building', 'capacitor', 'emissions', 'fuse', 'industrial', 'line',
+        'line_configuration', 'line_sensor', 'line_spacing', 'link', 'load',
+        'meter', 'metrics', 'motor', 'node', 'overhead_line',
+        'overhead_line_conductor', 'pole', 'pole_configuration',
+        'pqload', 'recloser', 'regulator', 'regulator_configuration',
+        'substation', 'switch', 'switch_coordinator', 'transformer',
+        'transformer_configuration', 'triplex_line', 'triplex_line_conductor',
+        'triplex_line_configuration', 'triplex_load', 'triplex_meter',
+        'underground_line', 'underground_line_conductor', 'vfd',
+        'volt_var_control', 'voltdump', 'multi_recorder'
+    ]
+};
+
 
 
 export const GraphPage = () => {
@@ -54,19 +74,23 @@ export const GraphPage = () => {
     const [mapa, setMap] = useState(false);    
     const [objects, setObjects] = useState({});
     const [Change, setChange] = useState(false)
+    const [openDropdownEdit, setOpenDropdownEdit] = useState({});
+    const [searchTerm, setSearchTerm] = useState('');
+    const [Modules, setModules] = useState({});
 
     const handleOpenModalView = async () => {
         try {
             const data = await simuladorNode.get(`networks/${projectId}`);
             const fetchedObjects = data.data.objects;
             setObjects(data.data);
+
             if (fetchedObjects && typeof fetchedObjects === 'object') {
                 setGroupedObjects(groupByClass(fetchedObjects));
-                console.log(groupedObjects);
+                
             } else {
                 setGroupedObjects({});
             }
-            console.log(groupedObjects);
+        
             setIsModalOpen(true);
         } catch (error) {
             console.error("Error al abrir el modal:", error);
@@ -87,6 +111,9 @@ export const GraphPage = () => {
         try {
 
             setIsModalOpen3(true);
+
+            
+
         } catch (error) {
             console.error("Error al abrir el modal:", error);
         }
@@ -121,11 +148,22 @@ export const GraphPage = () => {
                     });
                 };
 
+                let mods = "";
+
+                const {data} = await simuladorNode.get(`networks/${projectId}`);
+
+                Modules.forEach((item, index) => {
+                    if(data.modules[item] === undefined){
+                        mods += `module ${item}; \n`;
+                    }
+                });                
+
                 const url = `/addglm/${projectId}`;
                 const response = await simuladorNode.post(url, {
                     additionalContent: output,
-                    modelsContent: "",
+                    modelsContent: mods,
                 });
+
                 //\n module generators;
                 if(response.data.status == "ERROR"){
                     Swal.close();
@@ -213,9 +251,32 @@ export const GraphPage = () => {
     };
     const { links, nodes } = Links;
 
+
+
     const onApiRequest = async (projectId) => {
-        const data = await simuladorNode.get(`links/${projectId}`);
-        setLinks(data.data);
+        let data_nodos = null;
+        try{
+            data_nodos = await simuladorNode.get(`nodelinks/${projectId}`);
+            console.log('encontrado')
+            console.log(data_nodos.data.nodes);
+        
+        }catch(e){
+            console.log("No hay nodos");
+        }
+
+        let data = await simuladorNode.get(`links/${projectId}`);
+        if(data_nodos){
+            data.data.nodes.forEach((node, i) => {
+                const resultado = data_nodos.data.nodes.find(item => item.guid === node.guid);
+                if (resultado) {
+                    console.log(resultado);
+                    data.data.nodes[i].x = resultado.x;
+                    data.data.nodes[i].y = resultado.y;
+                }
+            });    
+        }
+        setLinks(data.data);   
+        
     };
 
     useEffect(() => {
@@ -270,6 +331,10 @@ export const GraphPage = () => {
         setOpenDropdown3(prev => ({ ...prev, [className]: !prev[className] }));
     };
 
+    const handleDropdownToggleEdit = (groupName) => {
+        setOpenDropdownEdit(prev => ({ ...prev, [groupName]: !prev[groupName] }));
+    };
+
     const handleItemClick = (item) => {
         setSelectedItem(item); // Establece el item seleccionado
         setIsListVisible(false); // Oculta la lista
@@ -291,6 +356,9 @@ export const GraphPage = () => {
             // Procesar los datos como necesites
             setSelectedItem2({ name: item, data: jsonData });
             setIsListVisible2(true);
+
+            
+
         } catch (error) {
             console.error(`Error al cargar el archivo JSON:`, error);
         }
@@ -334,12 +402,15 @@ export const GraphPage = () => {
     };
 
     const handleDeleteItem3 = (key) => {
-        
         let data = NewGlmlist;
+        let newModules = Modules;
+        
         data[selectedItem3?.name].items.splice(selectedItem3?.index, 1);
 
         if(data[selectedItem3?.name].items.length == 0){
+            const moduleObj = Object.keys(groupedEditObjects).find(key => groupedEditObjects[key].includes(selectedItem3?.name));
             delete data[selectedItem3?.name];
+            setModules(newModules.filter(item => item !== moduleObj))
         }
 
         setList(data);
@@ -355,8 +426,16 @@ export const GraphPage = () => {
 
     const handleSave3 = (nameObject, index) =>{
         let data = NewGlmlist;
+        let newModules = Modules;
 
         data[selectedItem3?.name].items[selectedItem3?.index][nameObject] = index;
+        const moduleObj = Object.keys(groupedEditObjects).find(key => groupedEditObjects[key].includes(selectedItem3?.name));
+
+        if (!newModules.includes(moduleObj)) {
+            newModules.push(moduleObj);
+        }
+
+        setModules(newModules);
 
         setList(data);
 
@@ -367,8 +446,10 @@ export const GraphPage = () => {
         if(mapa){
             await onApiRequest(projectId);
         }
+
+
+
         setMap(!mapa);
-    
     };
 
     const handleSimulate = async () => {
@@ -446,6 +527,12 @@ export const GraphPage = () => {
 
     }
 
+    const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value);
+        
+        
+    };
+
     return (
         <Container>
             <div>
@@ -462,7 +549,7 @@ export const GraphPage = () => {
                     <div className="col-12" >
                         {/*<ErrorBoundary>*/}
                             {(links.length>0)?(      
-                                (!mapa)?(<GraphMap nodes={nodes} links={links} />):(<Graph nodes={nodes} links={links} />)
+                                (!mapa)?(<GraphMap nodes={nodes} links={links} id_network={projectId} maps2={mapa} />):(<Graph nodes={nodes} links={links} />)
                             ):(<h1>Loading...</h1>)}
                         {/*</ErrorBoundary>*/}
                     </div>
@@ -507,21 +594,63 @@ export const GraphPage = () => {
 
             {isModalOpen2 && (
                 <Modal onClose={handleCloseModal2}>
-                    <ModalTitle>{selectedItem2 ? `Details for ${selectedItem2.name}` : 'Add objects'}</ModalTitle>
+                    <ModalTitle>
+                        {selectedItem2 ? `Details for ${selectedItem2.name}` : 'Add objects'}
+                    </ModalTitle>
                     
-                    { (isListVisible2 && selectedItem2 ) ?(
+                    {/* Solo muestra el buscador si no se ha seleccionado un objeto */}
+                    {!selectedItem2 && (
+                        <SearchInput 
+                            type="text"
+                            placeholder="Search objects..."
+                            value={searchTerm}
+                            onChange={handleSearchChange}
+                        />
+                    )}
+
+                    { selectedItem2 ? (
                         <div>
-                            <DetailView mode={true} item={selectedItem2.name} onBack={handleBackToList2} onDelete={handleDeleteItem2} onSave={handleSave} onSaveObjects={handleSaveObject}  jsonObject={selectedItem2.data[selectedItem2.name]}/>
+                            <DetailView 
+                                mode={true} 
+                                item={selectedItem2.name} 
+                                onBack={handleBackToList2} 
+                                onDelete={handleDeleteItem2} 
+                                onSave={handleSave} 
+                                onSaveObjects={handleSaveObject}  
+                                jsonObject={selectedItem2.data[selectedItem2.name]}
+                            />
                         </div>
                     ) : (
                         <ScrollableList>
-                            {EditObjects.map((objectName, index) => (
-                                <div key={index}>
-                                    <ClassTitle onClick={() => handleItemClick2(objectName)}>
-                                        {objectName}
-                                    </ClassTitle>
-                                </div>
-                            ))}
+                            {Object.entries(groupedEditObjects).map(([groupName, objects2]) => {
+                                // Filtra los objetos según el término de búsqueda
+                                const filteredObjects = objects2.filter(objectName =>
+                                    objectName.toLowerCase().includes(searchTerm.toLowerCase())
+                                );
+                                if(filteredObjects.length === 0) return null;
+                                return (
+                                    <div key={groupName}>
+                                        <ClassTitle onClick={() => handleDropdownToggleEdit(groupName)}>
+                                            {groupName} <ToggleIcon>{openDropdownEdit[groupName] ? '▼' : '▶'}</ToggleIcon>
+                                        </ClassTitle>
+                                        {openDropdownEdit[groupName] && (
+                                            <DropdownContent>
+                                                <ul>
+                                                    {filteredObjects.map((objectName) => (
+                                                        <li 
+                                                            key={objectName} 
+                                                            onClick={() => handleItemClick2(objectName)} 
+                                                            style={{ cursor: 'pointer' }}
+                                                        >
+                                                            {objectName.charAt(0).toUpperCase() + objectName.slice(1)}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </DropdownContent>
+                                        )}
+                                    </div>
+                                );
+                            })}
                         </ScrollableList>
                     )}
                 </Modal>
@@ -576,7 +705,6 @@ const Container = styled.div`
   align-items: center;
   min-height: 100vh;
   max-width: 100vw;
-  background-color: ${(props) => props.theme.bg}; /* Cambia el color de fondo según el tema */
   color: ${(props) => props.theme.text}; /* Cambia el color del texto según el tema */
 `;
 
@@ -637,22 +765,36 @@ const MenuBar = styled.div`
   justify-content: center;
   gap: 20px;
   padding: 20px 20px;
-  background-color: ${(props) => props.theme.bg};
+
   border-bottom: 2px solid ${(props) => props.theme.border};
   margin-bottom: 10px;
 `;
 
 const MenuButton = styled.button`
   background-color: transparent;
-  border: 2px solid ${(props) => props.theme.primary || '#007bff'};
-  color: ${(props) => props.theme.primary || '#007bff'};
+  border: 2px solid ${(props) => '#6699CC'};
+  color: ${(props) => '#6699CC'};
   padding: 8px 16px;
   border-radius: 4px;
   font-weight: bold;
   transition: background-color 0.3s ease, color 0.3s ease;
 
   &:hover {
-    background-color: ${(props) => props.theme.primary || '#007bff'};
+    background-color: ${(props) => '#6699CC'};
     color: ${(props) => props.theme.bg};
+  }
+`;
+
+const SearchInput = styled.input`
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid ${(props) => props.theme.border}; /* Cambia el borde según el tema */
+  border-radius: 4px;
+  background-color: ${(props) => props.theme.bg}; /* Cambia el color de fondo según el tema */
+  color: ${(props) => props.theme.text}; /* Cambia el color del texto según el tema */
+
+  &::placeholder {
+    color: ${(props) => props.theme.textSecondary}; /* Color del texto del placeholder */
   }
 `;
