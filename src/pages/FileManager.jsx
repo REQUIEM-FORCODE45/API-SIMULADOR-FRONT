@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Modal from 'react-modal';
 import styled from 'styled-components';
+import simuladorNode from '../api/SimuladorNodes';
 
 Modal.setAppElement('#root'); // Necesario para accesibilidad
 
@@ -24,7 +25,7 @@ const FileManager = () => {
     const fetchFiles = async () => {
         setLoading(true);
         try {
-            const response = await axios.get(`http://127.0.0.1:3000/list-files/${projectId}`);
+            const response = await simuladorNode.get(`list-files/${projectId}`);
             setFiles(response.data);
             setError('');
         } catch (err) {
@@ -52,7 +53,7 @@ const FileManager = () => {
         formData.append('file', selectedFile);
 
         try {
-            await axios.post(`http://127.0.0.1:3000/add-file/${projectId}`, formData, {
+            await simuladorNode.post(`add-file/${projectId}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -86,7 +87,7 @@ const FileManager = () => {
         setError('');
         setSuccess('');
         try {
-            await axios.delete(`http://127.0.0.1:3000/delete-file/${projectId}/${fileToDelete}`);
+            await simuladorNode.delete(`delete-file/${projectId}/${fileToDelete}`);
             setSuccess('File deleted successfully.');
             fetchFiles();
         } catch (err) {

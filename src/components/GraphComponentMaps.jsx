@@ -13,6 +13,7 @@ import 'leaflet/dist/leaflet.css';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { ThemeContext } from '../context/ThemeContext';
+import simuladorNode from '../api/SimuladorNodes';
 
 // Icon circular estilizado
 const circleIcon = L.divIcon({
@@ -192,7 +193,7 @@ const Graph = ({ nodes, links, id_network, maps2 }) => {
         newnodes[i].x = nodePositions[node.id][0];
         newnodes[i].y = nodePositions[node.id][1];
       });
-      const response = await axios.put(`http://localhost:3000/nodelinks/${id_network}`, { nodes: newnodes, links });
+      const response = await simuladorNode.put(`nodelinks/${id_network}`, { nodes: newnodes, links });
       console.log(response);
 
       Swal.close();

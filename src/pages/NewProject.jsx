@@ -10,9 +10,8 @@ import { useSidebar } from '../context/SidebarContext';
 
 
 // Configuración
-const TOKEN = '3f6e6440716a8097';
+const TOKEN = '630f002db1c04ce3';
 const API_URL = `/api2/${TOKEN}`;
-
 
 export const NewProject = () => {
   const { updateLinks } = useSidebar(); 
@@ -60,7 +59,7 @@ export const NewProject = () => {
         }
       });
       
-      const upfile = await axios.get(`http://localhost:3000/uploadFiles/${projectId}/${token}`);
+      const upfile = await simuladorNode.get(`uploadFiles/${projectId}/${token}`);
       console.log(upfile);
 
       const conversion = await axios.get(`${API_URL}/${token}/run/ -C input${token}.glm -o salida${token}.json`);
@@ -111,10 +110,10 @@ export const NewProject = () => {
   const saveUpdatedJSON = async (jsonData, glmData) => {
     try {
       // Hacer la solicitud PUT a la nueva ruta para actualizar la red
-      const responsejson = await axios.put(`http://localhost:3000/updateNetwork/${projectId}`, jsonData);
+      const responsejson = await simuladorNode.put(`updateNetwork/${projectId}`, jsonData);
       const formData = new FormData();
       formData.append('glm', glmData || "" );
-      const responseglm = await axios.post(`http://localhost:3000/updateGlm/${projectId}`,  formData);
+      const responseglm = await simuladorNode.post(`updateGlm/${projectId}`,  formData);
       //console.log('Network actualizada:', response.data);
     } catch (error) {
       //console.error('Error al guardar el nuevo JSON:', error);

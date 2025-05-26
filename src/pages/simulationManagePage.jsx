@@ -4,11 +4,11 @@ import { Card2 } from "../components/simulationCard";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-
+const Url = process.env.API_URL;
 
 
 export const SimulationManagePage = () => {
-  const {onSetDataSend, dataSend, loading, dataReceive, }= useFetch('http://localhost:3000/results', {});
+  const {onSetDataSend, dataSend, loading, dataReceive, }= useFetch(`${Url}results`, {});
 
   
 

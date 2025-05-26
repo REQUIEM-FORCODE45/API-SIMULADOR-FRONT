@@ -8,9 +8,8 @@ import { useSidebar } from '../context/SidebarContext';
 import axios from 'axios';
 
 // Configuración
-const TOKEN  = '3f6e6440716a8097';
+const TOKEN  = '630f002db1c04ce3';
 const API_URL = `/api2/${TOKEN}`;
-
 
 export const ProjectForm = () => {
   const { links, updateLinks } = useSidebar(); 

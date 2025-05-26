@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import PlotlyChartComponent from '../components/PlotlyChatComponent';
 import styled from 'styled-components';
 import { useSidebar } from '../context/SidebarContext';
 import { useParams } from 'react-router-dom';
 import Modal from 'react-modal';
+import simuladorNode from '../api/SimuladorNodes';
 
 Modal.setAppElement('#root'); // Necesario para accesibilidad
 
@@ -26,14 +28,9 @@ export const AppGraph = () => {
             { label: "Data panel", to: `/Livepanel` },
         ]);
 
-        fetch(`http://127.0.0.1:3000/list-csv-files/${projectId}`)
+        simuladorNode.get(`list-csv-files/${projectId}`)
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('Error fetching files');
-                }
-                return response.json();
-            })
-            .then(data => {
+                const data = response.data;
                 if (data.length === 0) {
                     setError('No CSV files found for this project.');
                     setFiles([]);
@@ -64,14 +61,7 @@ export const AppGraph = () => {
         if (!fileToDelete) return;
 
         try {
-            const response = await fetch(`http://127.0.0.1:3000/delete-csv-file/${projectId}/${fileToDelete}`, {
-                method: 'DELETE',
-            });
-
-            if (!response.ok) {
-                throw new Error('Error deleting file');
-            }
-
+            await simuladorNode.delete(`delete-csv-file/${projectId}/${fileToDelete}`);
             setFiles(files.filter(file => file !== fileToDelete));
             closeModal();
             alert('File deleted successfully');

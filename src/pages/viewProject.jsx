@@ -9,12 +9,14 @@ import Swal from 'sweetalert2';
 import { useSidebar } from "../context/SidebarContext";
 import TablePower2 from "../components/showTablePower2";
 
+const Url = process.env.API_URL;
+
 export const View = () => {
     const { updateLinks } = useSidebar(); 
     const { setTheme, theme } = useContext(ThemeContext);
     const { projectId } = useParams();
     const nav = useNavigate();
-    const { dataReceive } = useFetch(`http://localhost:3000/networks/${projectId}`, {});
+    const { dataReceive } = useFetch(`${Url}networks/${projectId}`, {});
     const [Input, setInput] = useState({
         classifiedObjects: {}, 
         columns: {}, 
@@ -109,7 +111,7 @@ export const View = () => {
         };
 
         try {
-            const resp = await fetch('http://localhost:3000/test', requestOptions);
+            const resp = await fetch(`${Url}test`, requestOptions);
             if (!resp.ok) {
                 throw new Error('Network response was not ok');
             }
